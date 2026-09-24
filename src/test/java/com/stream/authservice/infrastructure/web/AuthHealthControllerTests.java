@@ -12,9 +12,10 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.stream.authservice.config.UseCaseConfig;
+import com.stream.authservice.infrastructure.web.response.ApiResponseBodyAdvice;
 
 @WebMvcTest(AuthHealthController.class)
-@Import(UseCaseConfig.class)
+@Import({UseCaseConfig.class, ApiResponseBodyAdvice.class})
 class AuthHealthControllerTests {
 
     @Autowired
@@ -24,7 +25,12 @@ class AuthHealthControllerTests {
     void healthReturnsServiceStatus() throws Exception {
         mockMvc.perform(get("/api/auth/health"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.service", is("auth-service")))
-                .andExpect(jsonPath("$.status", is("UP")));
+                .andExpect(jsonPath("$.success", is(true)))
+                .andExpect(jsonPath("$.code", is("SUCCESS")))
+                .andExpect(jsonPath("$.message", is("Success")))
+                .andExpect(jsonPath("$.data.service", is("auth-service")))
+                .andExpect(jsonPath("$.data.status", is("UP")))
+                .andExpect(jsonPath("$.path", is("/api/auth/health")))
+                .andExpect(jsonPath("$.timestamp").exists());
     }
 }

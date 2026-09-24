@@ -23,7 +23,7 @@ com.stream.authservice
   domain/
     model/        Business models and rules without Spring dependencies
   infrastructure/
-    web/          HTTP controllers and web adapters
+    web/          HTTP controllers, web adapters, and standard API responses
     messaging/    Messaging adapters such as Kafka producers/consumers
   config/         Spring configuration and dependency wiring
 ```
@@ -33,10 +33,33 @@ Current request flow:
 ```text
 GET /api/auth/health
   -> infrastructure.web.AuthHealthController
+  -> infrastructure.web.response.ApiResponseBodyAdvice
   -> application.usecase.GetAuthHealthUseCase
   -> domain.model.ServiceHealth
   -> application.dto.AuthHealthResponse
 ```
+
+## Standard API Response
+
+REST controllers can return application DTOs directly. Successful JSON responses are wrapped automatically by `ApiResponseBodyAdvice`:
+
+```json
+{
+  "success": true,
+  "code": "SUCCESS",
+  "message": "Success",
+  "data": {},
+  "timestamp": "2026-09-24T15:00:00Z",
+  "path": "/api/example"
+}
+```
+
+Rules:
+
+- Controllers should return DTOs or `ApiResponse<T>`.
+- Existing `ApiResponse<T>` bodies are not wrapped again.
+- Plain `String` responses are skipped to avoid Spring message converter conflicts.
+- Error responses should be standardized later with a dedicated global exception handler.
 
 ## Kafka Foundation
 
@@ -128,8 +151,15 @@ Response:
 
 ```json
 {
-  "service": "auth-service",
-  "status": "UP"
+  "success": true,
+  "code": "SUCCESS",
+  "message": "Success",
+  "data": {
+    "service": "auth-service",
+    "status": "UP"
+  },
+  "timestamp": "2026-09-24T15:00:00Z",
+  "path": "/api/auth/health"
 }
 ```
 
