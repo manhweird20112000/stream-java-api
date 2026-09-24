@@ -1,6 +1,6 @@
-# Auth Service
+# Livestream Service
 
-Auth Service is a Spring Boot service for authentication-related APIs in the Stream platform.
+Livestream Service is a Spring Boot service for livestream-related APIs in the Stream platform.
 
 This repository also acts as a base service codebase for other Stream backend services. It keeps shared service foundations such as Clean Architecture package boundaries, Docker, and temporary Kafka wiring in one place so future services can copy the structure consistently.
 
@@ -16,7 +16,7 @@ This repository also acts as a base service codebase for other Stream backend se
 ## Architecture
 
 ```text
-com.stream.authservice
+com.stream.livestreamservice
   application/
     dto/          Response/request DTOs used by use cases and adapters
     usecase/      Application use cases
@@ -63,7 +63,7 @@ Rules:
 
 ## Kafka Foundation
 
-Kafka is configured as reusable service infrastructure, but this auth service does not publish or consume domain events yet.
+Kafka is configured as reusable service infrastructure, but this livestream service does not publish or consume domain events yet.
 
 Local default:
 
@@ -155,7 +155,7 @@ Response:
   "code": "SUCCESS",
   "message": "Success",
   "data": {
-    "service": "auth-service",
+    "service": "livestream-service",
     "status": "UP"
   },
   "timestamp": "2026-09-24T15:00:00Z",

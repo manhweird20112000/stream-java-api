@@ -17,9 +17,9 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
 
-  auth-service:
+  livestream-service:
     build: .
-    container_name: auth-service
+    container_name: livestream-service
     depends_on:
       - kafka
     ports:
