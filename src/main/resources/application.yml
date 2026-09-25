@@ -1,6 +1,13 @@
 spring:
   application:
     name: livestream-service
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/livestream}
+    username: ${DB_USERNAME:stream}
+    password: ${DB_PASSWORD:stream}
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    enabled: true
   kafka:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
     producer:
